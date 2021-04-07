@@ -1,32 +1,36 @@
 module Api 
     module V1
-        class ReviewsController < ApplicationController
-            before_action :authenticate
+        class  ReviewsController < ApplicationController
+            protect_from_forgery with: :null_session
 
-      # POST /api/v1/reviews
+      def index 
+        reviews =  Review.all
+
+        render json: ReviewSerializer.new(reviews).serialized_json
+
+      end
       def create
-        review = current_user.reviews.new(review_params)
+        review = Review.new(review_params)
 
         if review.save
-          render json: serializer(review)
+            render json: ReviewSerializer.new(review).serialized_json
         else
-          render json: errors(review), status: 422
+          render json: { errors: review.errors.messages }, status: 422
         end
       end
 
-      # DELETE /api/v1/reviews/:id
       def destroy
-        review = current_user.reviews.find(params[:id])
+        review = Review.find(params[:id])
 
         if review.destroy
           head :no_content
         else
-          render json: errors(review), status: 422
+          render json: { errors: review.errors.messages}, status: 422
         end
       end
             private 
             def review_params
-                params.require(:review).permit(:title, :description, :score, :ariline_id)
+                params.require(:review).permit(:title, :description, :score, :airline_id)
             end
 
         end
