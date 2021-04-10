@@ -36,9 +36,10 @@ const Airlines = () => {
         // .then( resp => console.log(resp))
         // .catch( resp => console.log(resp))  
         // log the JDON data to the console
-        .then( resp => setAirlines(resp.data.data))
+        .then( resp => 
+            setAirlines(resp.data.data))
         .catch( data => console.log('error', data))
-      }, [airlines.length])
+    }, [airlines.length])
 
       const grid = airlines.map( item => {
         return (
@@ -60,8 +61,8 @@ const Airlines = () => {
             </Grid>
         </Home>
         
-    )
-
+    )  
+    
     
 }
 
